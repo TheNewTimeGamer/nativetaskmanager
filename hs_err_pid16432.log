@@ -1,0 +1,45 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ffa2abce113, pid=16432, tid=16184
+#
+# JRE version: Java(TM) SE Runtime Environment (13.0.2+8) (build 13.0.2+8)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (13.0.2+8, mixed mode, sharing, tiered, compressed oops, g1 gc, windows-amd64)
+# Problematic frame:
+# V  [jvm.dll+0x25e113]
+#
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.java.com/bugreport/crash.jsp
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -Dfile.encoding=Cp1252 newtime.util.process.ProcessManager
+
+Host: Intel(R) Core(TM) i5-6600K CPU @ 3.50GHz, 4 cores, 15G,  Windows 10 , 64 bit Build 18362 (10.0.18362.959)
+Time: Mon Aug 10 23:09:21 2020 W. Europe Daylight Time elapsed time: 0 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000001662e69c000):  JavaThread "C1 CompilerThread0" daemon [_thread_in_vm, id=16184, stack(0x000000078c100000,0x000000078c200000)]
+
+
+Current CompileTask:
+C1:    427  545       3       com.sun.jna.Function::invoke (548 bytes)
+
+Stack: [0x000000078c100000,0x000000078c200000],  sp=0x000000078c1fe950,  free space=1018k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x25e113]
+V  [jvm.dll+0x25df00]
+V  [jvm.dll+0x362ca6]
+V  [jvm.dll+0x601deb]
+V  [jvm.dll+0x1a7777]
+V  [jvm.dll+0x129ced]
+V  [jvm.dll+0x128ea7]
+V  [jvm.dll+0x12adc7]
+V  [jvm.dll+0x213e6d]
+V  [jvm.dll+0x2120bb]
+V  [jvm.dll+0x736bb6]
+V  [jvm.dll+0x72fcaa]

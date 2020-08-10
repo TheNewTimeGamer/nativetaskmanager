@@ -76,7 +76,7 @@ class NativeProcess {
 		this.processName = Native.toString(entry.szExeFile);
 	}
 	
-	public void terminate() {
+	public void terminate() throws Win32Exception {
 		HANDLE handle = Kernel32.INSTANCE.OpenProcess(Kernel32.PROCESS_TERMINATE, true, this.processID.intValue());	
 		if(handle == null) {
 			throw new Win32Exception(Native.getLastError());
@@ -86,7 +86,7 @@ class NativeProcess {
 		}		
 	}
 	
-	public void setPriority(long priority) {		
+	public void setPriority(long priority) throws Win32Exception {		
 		HANDLE handle = Kernel32.INSTANCE.OpenProcess(Kernel32.PROCESS_SET_INFORMATION, true, this.processID.intValue());
 		if(handle == null) {
 			throw new Win32Exception(Native.getLastError());
@@ -99,7 +99,7 @@ class NativeProcess {
 		}
 	}
 	
-	public void setAffinity(long affinity) {
+	public void setAffinity(long affinity) throws Win32Exception {
 		HANDLE handle = Kernel32.INSTANCE.OpenProcess(Kernel32.PROCESS_SET_INFORMATION, true, this.processID.intValue());
 		if(handle == null) {
 			throw new Win32Exception(Native.getLastError());

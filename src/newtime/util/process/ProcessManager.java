@@ -76,16 +76,28 @@ class NativeProcess {
 		this.processName = Native.toString(entry.szExeFile);
 	}
 	
-	public void terminate() throws Win32Exception {
+	/**
+	 * Terminate the process, supplying the reason in the form of an exit code.
+	 * 
+	 * @param exitCode The exit code send with the termination signal.
+	 * @throws Win32Exception
+	 */
+	public void terminate(int exitCode) throws Win32Exception {
 		HANDLE handle = Kernel32.INSTANCE.OpenProcess(Kernel32.PROCESS_TERMINATE, true, this.processID.intValue());	
 		if(handle == null) {
 			throw new Win32Exception(Native.getLastError());
 		}
-		if(!Kernel32.INSTANCE.TerminateProcess(handle, 0)) {
+		if(!Kernel32.INSTANCE.TerminateProcess(handle, exitCode)) {
 			throw new Win32Exception(Native.getLastError());
 		}		
 	}
 	
+	/**
+	 * Sets the resource priority of the process, limiting or increasing its priority to gain or lose access to more System resources.
+	 * 
+	 * @param priority Priority constant found in ExtendedKernel32.
+	 * @throws Win32Exception
+	 */	
 	public void setPriority(long priority) throws Win32Exception {		
 		HANDLE handle = Kernel32.INSTANCE.OpenProcess(Kernel32.PROCESS_SET_INFORMATION, true, this.processID.intValue());
 		if(handle == null) {
@@ -99,6 +111,12 @@ class NativeProcess {
 		}
 	}
 	
+	/**	
+	 * Sets the windows affinity property of the process, specifying which CPU cores this process should be allowed to run on.
+	 * 
+	 * @param affinity bit mask representing which CPU cores are used.
+	 * @throws Win32Exception
+	 */
 	public void setAffinity(long affinity) throws Win32Exception {
 		HANDLE handle = Kernel32.INSTANCE.OpenProcess(Kernel32.PROCESS_SET_INFORMATION, true, this.processID.intValue());
 		if(handle == null) {

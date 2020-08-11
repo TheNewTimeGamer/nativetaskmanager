@@ -85,11 +85,13 @@ class NativeProcess {
 	public void terminate(int exitCode) throws Win32Exception {
 		HANDLE handle = Kernel32.INSTANCE.OpenProcess(Kernel32.PROCESS_TERMINATE, true, this.processID.intValue());	
 		if(handle == null) {
-			throw new Win32Exception(Native.getLastError());
+			throw new Win32HandleException(handle, Native.getLastError());
 		}
 		if(!Kernel32.INSTANCE.TerminateProcess(handle, exitCode)) {
-			throw new Win32Exception(Native.getLastError());
+			throw new Win32HandleException(handle, Native.getLastError());
 		}		
+		
+		Kernel32.INSTANCE.CloseHandle(handle);
 	}
 	
 	/**
@@ -101,14 +103,16 @@ class NativeProcess {
 	public void setPriority(long priority) throws Win32Exception {		
 		HANDLE handle = Kernel32.INSTANCE.OpenProcess(Kernel32.PROCESS_SET_INFORMATION, true, this.processID.intValue());
 		if(handle == null) {
-			throw new Win32Exception(Native.getLastError());
+			throw new Win32HandleException(handle, Native.getLastError());
 		}
 		
 		DWORD dPriority = new DWORD(priority);
 		
 		if(!ExtendedKernel32.INSTANCE.SetPriorityClass(handle, dPriority)) {
-			throw new Win32Exception(Native.getLastError());
+			throw new Win32HandleException(handle, Native.getLastError());
 		}
+		
+		Kernel32.INSTANCE.CloseHandle(handle);
 	}
 	
 	/**	
@@ -120,14 +124,25 @@ class NativeProcess {
 	public void setAffinity(long affinity) throws Win32Exception {
 		HANDLE handle = Kernel32.INSTANCE.OpenProcess(Kernel32.PROCESS_SET_INFORMATION, true, this.processID.intValue());
 		if(handle == null) {
-			throw new Win32Exception(Native.getLastError());
+			throw new Win32HandleException(handle, Native.getLastError());
 		}
 		
 		ULONG_PTR uLongPtr = new ULONG_PTR(affinity);
 		
 		if(!Kernel32.INSTANCE.SetProcessAffinityMask(handle, uLongPtr)) {
-			throw new Win32Exception(Native.getLastError());
+			throw new Win32HandleException(handle, Native.getLastError());
 		}
+		
+		Kernel32.INSTANCE.CloseHandle(handle);
+	}
+	
+}
+
+class Win32HandleException extends Win32Exception {
+
+	public Win32HandleException(HANDLE handle, int code) {
+		super(code);
+		Kernel32.INSTANCE.CloseHandle(handle);
 	}
 	
 }
